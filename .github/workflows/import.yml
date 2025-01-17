@@ -47,6 +47,7 @@ jobs:
         "docker.io/postgres:latest"
         "docker.io/rabbitmq:3.12-management"
         "docker.io/reachfive/fake-smtp-server:latest"
+        "docker.io/redis:5.0.8-alpine"
         "docker.io/redis:7"
         "docker.io/redis:latest"
         "docker.io/vectorized/redpanda:latest"
