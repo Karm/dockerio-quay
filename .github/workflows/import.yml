@@ -11,18 +11,17 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
-
-    - name: Install Podman
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y podman
-
     - name: Run Import Script
       env:
         KARM_QUAY_API_TOKEN: ${{ secrets.KARM_QUAY_API_TOKEN }}
       run: |
+        # https://github.com/orgs/community/discussions/148648
+        for var in PATH XDG_CONFIG_HOME; do
+            sed -Ee "s/^/${var}=/" -e 's/(runner)admin/\1/g' <<< "${!var}"
+        done | tee -a "$GITHUB_ENV"
+
+        sudo apt-get install -y podman
+
         mkdir ~/.docker -p
         tee ~/.docker/config.json <<-EOX
         {
