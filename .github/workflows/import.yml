@@ -19,7 +19,7 @@ jobs:
         for var in PATH XDG_CONFIG_HOME; do
             sed -Ee "s/^/${var}=/" -e 's/(runner)admin/\1/g' <<< "${!var}"
         done | tee -a "$GITHUB_ENV"
-
+        ln -s /home/runner /home/runneradmin
         sudo apt-get install -y podman
 
         mkdir ~/.docker -p
