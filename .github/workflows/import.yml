@@ -23,7 +23,7 @@ jobs:
       env:
         KARM_QUAY_API_TOKEN: ${{ secrets.KARM_QUAY_API_TOKEN }}
       run: |
-        mkdir ~/.docker
+        mkdir ~/.docker -p
         tee ~/.docker/config.json <<-EOX
         {
             "auths": {
