@@ -76,7 +76,7 @@ jobs:
           echo "--------------------"
         done
 
-create-manifest:
+  create-manifest:
     needs: import-containers
     runs-on: ubuntu-22.04
 
