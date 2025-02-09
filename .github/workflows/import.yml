@@ -68,3 +68,23 @@ jobs:
           docker push $new_image || { echo "Failed to push $new_image"; continue; }
           echo "--------------------"
         done
+
+        for image in "${images[@]}"; do
+          tag=$(echo $image | cut -d':' -f2)
+          base_name=$(echo $image | cut -d'/' -f2- | cut -d':' -f1)
+          manifest_name="quay.io/$quay_user/$base_name:$tag"
+        
+          echo "Creating manifest for $manifest_name..."
+          docker manifest create $manifest_name \
+            quay.io/$quay_user/$base_name:$tag --amend \
+            quay.io/$quay_user/$base_name:$tag
+        
+          echo "Annotating manifest for $manifest_name..."
+          docker manifest annotate $manifest_name quay.io/$quay_user/$base_name:$tag --os linux --arch amd64
+          docker manifest annotate $manifest_name quay.io/$quay_user/$base_name:$tag --os linux --arch arm64
+        
+          echo "Pushing manifest for $manifest_name..."
+          docker manifest push $manifest_name
+        
+          echo "--------------------"
+        done
