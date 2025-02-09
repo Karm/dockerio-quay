@@ -68,11 +68,11 @@ jobs:
           tag=$(echo $image | cut -d':' -f2)
           new_image="quay.io/$quay_user/$(echo $image | cut -d'/' -f2- | cut -d':' -f1):$tag"
           echo "Pulling $image..."
-          #docker pull $image || { echo "Failed to pull $image"; continue; }
+          docker pull $image || { echo "Failed to pull $image"; continue; }
           echo "Tagging $image to $new_image-$arch_suffix..."
-          #docker tag $image $new_image-$arch_suffix || { echo "Failed to tag image"; continue; }
+          docker tag $image $new_image-$arch_suffix || { echo "Failed to tag image"; continue; }
           echo "Pushing $new_image-$arch_suffix to Quay.io..."
-          #docker push $new_image-$arch_suffix || { echo "Failed to push $new_image"; continue; }
+          docker push $new_image-$arch_suffix || { echo "Failed to push $new_image"; continue; }
           echo "--------------------"
         done
 
