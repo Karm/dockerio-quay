@@ -102,19 +102,18 @@ jobs:
         for image in "${images[@]}"; do
           tag=$(echo $image | cut -d':' -f2)
           base_name=$(echo $image | cut -d'/' -f2- | cut -d':' -f1)
-          manifest_name="quay.io/$quay_user/$base_name:$tag"
 
           echo "Pulling images for manifest..."
           docker pull quay.io/$quay_user/$base_name:$tag-amd64
           docker pull quay.io/$quay_user/$base_name:$tag-arm64
 
-          echo "Creating manifest for $manifest_name..."
-          docker manifest create $manifest_name
-          docker manifest add $manifest_name quay.io/$quay_user/$base_name:$tag-arm64
-          docker manifest add $manifest_name quay.io/$quay_user/$base_name:$tag-amd64
+          echo "Creating manifest for $base_name..."
+          docker manifest create $base_name
+          docker manifest add $base_name quay.io/$quay_user/$base_name:$tag-arm64
+          docker manifest add $base_name quay.io/$quay_user/$base_name:$tag-amd64
 
-          echo "Pushing manifest for $manifest_name..."
-          docker manifest push $manifest_name docker://$manifest_name
+          echo "Pushing manifest for $base_name..."
+          docker manifest push $base_name docker://quay.io/$quay_user/$base_name:$tag
 
           echo "--------------------"
         done
