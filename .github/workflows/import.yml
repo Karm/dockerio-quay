@@ -124,6 +124,6 @@ jobs:
         
           echo "Pushing manifest for $manifest_name..."
           docker manifest push $manifest_name
-        
+          yes | docker system prune -a
           echo "--------------------"
         done
